@@ -10,9 +10,15 @@ export default function Footer() {
           </span>
         </div>
         <div className="flex items-center gap-5 text-[9px] uppercase tracking-widest text-slate-700">
+          <a
+            href="/privacy"
+            className="hover:text-slate-400 transition-colors"
+          >
+            Privacy Policy
+          </a>
           <span className="hidden sm:inline">NORTH_AM</span>
           <span className="text-slate-800 hidden md:inline">
-            &copy; 2024 REDLINE SYSTEMS
+            &copy; 2026 REDLINE SYSTEMS
           </span>
         </div>
       </div>

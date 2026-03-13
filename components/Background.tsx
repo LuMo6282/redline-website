@@ -49,7 +49,7 @@ export default function Background() {
         style={{
           opacity: 0,
           background:
-            "radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(220,38,38,0.06), transparent 40%)",
+            "radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(220,38,38,0.08), transparent 40%)",
         }}
       />
 

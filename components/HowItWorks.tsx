@@ -66,7 +66,7 @@ export default function HowItWorks() {
               {/* Step number */}
               <span
                 className="text-[64px] font-bold leading-none tracking-tighter block mb-4"
-                style={{ color: step.accent, opacity: 0.12 }}
+                style={{ color: step.accent, opacity: 0.3 }}
               >
                 {step.num}
               </span>
