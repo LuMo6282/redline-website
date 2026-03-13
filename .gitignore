@@ -20,6 +20,14 @@
 # production
 /build
 
+# local waitlist data (dev only — use Supabase in production)
+/data/waitlist.json
+
+# env
+.env
+.env.local
+.env*.local
+
 # misc
 .DS_Store
 *.pem

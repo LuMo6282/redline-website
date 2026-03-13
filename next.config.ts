@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // data/ folder (local waitlist JSON) is server-side only — exclude from client bundles
+  serverExternalPackages: [],
 };
 
 export default nextConfig;
