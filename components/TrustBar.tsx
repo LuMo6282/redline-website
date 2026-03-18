@@ -12,12 +12,6 @@ const archetypes = [
   { icon: "⚡", label: "Hyrox competitors" },
 ];
 
-const stats = [
-  { value: "78%", label: "avg readiness accuracy" },
-  { value: "<30s", label: "daily check-in" },
-  { value: "3", label: "AI-adapted options daily" },
-];
-
 export default function TrustBar() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
@@ -56,25 +50,6 @@ export default function TrustBar() {
           </div>
         </motion.div>
 
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-8 border-t border-b border-white/[0.05] py-10">
-          {stats.map((s, i) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 12 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3 + i * 0.1, duration: 0.5, ease: EASE }}
-              className="text-center"
-            >
-              <span className="text-[clamp(1.5rem,3vw,2.5rem)] text-white font-bold tracking-tight block">
-                {s.value}
-              </span>
-              <span className="text-[10px] text-slate-600 uppercase tracking-[0.2em]">
-                {s.label}
-              </span>
-            </motion.div>
-          ))}
-        </div>
       </div>
     </section>
   );
