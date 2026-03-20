@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -14,6 +15,7 @@ export default function WaitlistForm() {
   const [shake, setShake] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
 
   // Fetch initial count on mount for social proof
   useEffect(() => {
@@ -53,6 +55,19 @@ export default function WaitlistForm() {
 
     setStatus("loading");
     try {
+      // Check if this email has beta access
+      const betaRes = await fetch("/api/beta/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const betaData = await betaRes.json();
+      if (betaData.isBeta) {
+        router.push(`/beta?email=${encodeURIComponent(email)}`);
+        return;
+      }
+
+      // Otherwise, add to waitlist
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
