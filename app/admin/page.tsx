@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface WaitlistEntry {
@@ -86,7 +87,10 @@ function SeverityBadge({ severity }: { severity: string }) {
   );
 }
 
-export default function AdminPage() {
+function AdminContent() {
+  const searchParams = useSearchParams();
+  const autoKey = searchParams.get("key") || "";
+
   const [password, setPassword] = useState("");
   const [authed, setAuthed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -95,21 +99,28 @@ export default function AdminPage() {
   const [tab, setTab] = useState<Tab>("overview");
   const [storedPassword, setStoredPassword] = useState("");
 
-  async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
+  // Auto-login if redirected from waitlist with key
+  useEffect(() => {
+    if (autoKey) {
+      loginWith(autoKey);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function loginWith(pw: string) {
     setLoading(true);
     setError("");
     try {
       const res = await fetch("/api/admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password: pw }),
       });
       if (res.ok) {
         const d = await res.json();
         setData(d);
         setAuthed(true);
-        setStoredPassword(password);
+        setStoredPassword(pw);
       } else {
         setError("Wrong password.");
       }
@@ -118,6 +129,11 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    await loginWith(password);
   }
 
   async function refresh() {
@@ -552,5 +568,19 @@ export default function AdminPage() {
         </AnimatePresence>
       </div>
     </main>
+  );
+}
+
+export default function AdminPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="relative min-h-screen bg-[#050505] flex items-center justify-center">
+          <div className="font-mono text-sm text-slate-600">Loading...</div>
+        </main>
+      }
+    >
+      <AdminContent />
+    </Suspense>
   );
 }

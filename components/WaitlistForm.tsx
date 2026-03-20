@@ -55,6 +55,18 @@ export default function WaitlistForm() {
 
     setStatus("loading");
     try {
+      // Check if this is the admin email
+      const adminRes = await fetch("/api/admin/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const adminData = await adminRes.json();
+      if (adminData.isAdmin) {
+        router.push(`/admin?key=${encodeURIComponent(email)}`);
+        return;
+      }
+
       // Check if this email has beta access
       const betaRes = await fetch("/api/beta/verify", {
         method: "POST",
