@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
-import { Share_Tech_Mono } from "next/font/google";
+import { Share_Tech_Mono, Syne, Inter_Tight } from "next/font/google";
 import "./globals.css";
 
 const shareTechMono = Share_Tech_Mono({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-share-tech-mono",
+  display: "swap",
+});
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-syne",
+  display: "swap",
+});
+
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-inter-tight",
   display: "swap",
 });
 
@@ -28,7 +42,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${shareTechMono.variable} antialiased`}>
+      <body
+        className={`${shareTechMono.variable} ${syne.variable} ${interTight.variable} antialiased`}
+      >
         {children}
       </body>
     </html>

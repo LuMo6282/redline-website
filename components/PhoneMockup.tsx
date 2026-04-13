@@ -5,6 +5,10 @@ import { motion, useInView } from "framer-motion";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+const FONT_DISPLAY = "var(--font-syne), 'Syne', sans-serif";
+const FONT_MONO =
+  "var(--font-share-tech-mono), 'Share Tech Mono', monospace";
+
 /* ─── Count-up hook ─── */
 function useCountUp(target: number, duration = 1400, trigger = false) {
   const [count, setCount] = useState(0);
@@ -48,12 +52,12 @@ function useTypewriter(text: string, speed = 18, trigger = false) {
 
 /* ─── Breakdown bars data ─── */
 const BARS = [
-  { label: "HRV",      value: "21/25", pct: 82, color: "#00ff88" },
-  { label: "Sleep",    value: "18/20", pct: 90, color: "#00ff88" },
-  { label: "Wellness", value: "20/25", pct: 80, color: "#00ff88" },
-  { label: "Soreness", value: "6/10",  pct: 60, color: "#FFB800" },
-  { label: "Stress",   value: "8/10",  pct: 80, color: "#00ff88" },
-  { label: "Load",     value: "14/15", pct: 93, color: "#00ff88" },
+  { label: "HRV",      value: "21/25", pct: 82, color: "#16d975" },
+  { label: "Sleep",    value: "18/20", pct: 90, color: "#16d975" },
+  { label: "Wellness", value: "20/25", pct: 80, color: "#16d975" },
+  { label: "Soreness", value: "6/10",  pct: 60, color: "#f7b955" },
+  { label: "Stress",   value: "8/10",  pct: 80, color: "#16d975" },
+  { label: "Load",     value: "14/15", pct: 93, color: "#16d975" },
 ];
 
 const COACH_TEXT =
@@ -66,43 +70,59 @@ function ReadinessRing({ score, animate }: { score: number; animate: boolean }) 
   const offset = circ - (score / 100) * circ;
   return (
     <div className="flex justify-center my-1">
-      <div className="relative" style={{ width: 86, height: 86 }}>
+      <div className="relative" style={{ width: 92, height: 92 }}>
         <svg
-          style={{ width: 86, height: 86, transform: "rotate(-90deg)" }}
+          style={{ width: 92, height: 92, transform: "rotate(-90deg)" }}
           viewBox="0 0 100 100"
         >
+          {/* Track */}
           <circle
             cx="50" cy="50" r={r}
             fill="none"
-            stroke="rgba(255,255,255,0.07)"
-            strokeWidth="6"
+            stroke="rgba(245,241,232,0.07)"
+            strokeWidth="5.5"
+          />
+          {/* Outer faint tick guides */}
+          <circle
+            cx="50" cy="50" r={r + 5}
+            fill="none"
+            stroke="rgba(22,217,117,0.1)"
+            strokeWidth="0.5"
+            strokeDasharray="1 4"
           />
           <motion.circle
             cx="50" cy="50" r={r}
             fill="none"
-            stroke="#00ff88"
-            strokeWidth="6"
+            stroke="#16d975"
+            strokeWidth="5.5"
             strokeLinecap="round"
             strokeDasharray={circ}
             initial={{ strokeDashoffset: circ }}
             animate={{ strokeDashoffset: animate ? offset : circ }}
-            transition={{ duration: 1.2, ease: EASE, delay: 0.3 }}
+            transition={{ duration: 1.3, ease: EASE, delay: 0.3 }}
+            style={{ filter: "drop-shadow(0 0 6px rgba(22,217,117,0.55))" }}
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
-            className="font-bold text-white leading-none"
-            style={{ fontFamily: "Syne, sans-serif", fontSize: 22 }}
+            style={{
+              fontFamily: FONT_DISPLAY,
+              fontSize: 26,
+              fontWeight: 800,
+              color: "#f5f1e8",
+              lineHeight: 1,
+              letterSpacing: "-0.02em",
+            }}
           >
             {score}
           </span>
           <span
-            className="uppercase text-center leading-none mt-0.5"
+            className="uppercase text-center leading-none mt-1"
             style={{
-              fontFamily: "Space Mono, monospace",
+              fontFamily: FONT_MONO,
               fontSize: 6,
-              letterSpacing: 1.5,
-              color: "#5a5a5a",
+              letterSpacing: 1.6,
+              color: "#7c786c",
             }}
           >
             READINESS
@@ -135,7 +155,7 @@ function usePopStyles(hovered: HoverId) {
 
   const pop = (
     id: string,
-    glowColor = "rgba(0,255,136,0.18)"
+    glowColor = "rgba(22,217,117,0.18)"
   ): CSSProperties => {
     const active = hovered === id;
     const dimmed = isDimmed(id);
@@ -185,20 +205,20 @@ export default function PhoneMockup() {
       {/* inView sentinel */}
       <div ref={sentinelRef} className="absolute inset-0 pointer-events-none" />
 
-      {/* Red glow beneath */}
+      {/* Subtle red glow beneath */}
       <motion.div
         className="absolute pointer-events-none"
         style={{
           bottom: 8,
           left: "50%",
           translateX: "-50%",
-          width: "65%",
-          height: 24,
+          width: "55%",
+          height: 22,
           background:
-            "radial-gradient(ellipse, rgba(220,38,38,0.5) 0%, transparent 70%)",
-          filter: "blur(10px)",
+            "radial-gradient(ellipse, rgba(239,43,45,0.35) 0%, transparent 70%)",
+          filter: "blur(16px)",
         }}
-        animate={{ opacity: [0.4, 0.85, 0.4] }}
+        animate={{ opacity: [0.3, 0.65, 0.3] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       />
 
@@ -208,23 +228,24 @@ export default function PhoneMockup() {
         style={{ position: "relative" }}
       >
         {/* Corner brackets */}
-        <div className="absolute -top-3 -left-3 w-6 h-6 border-t border-l border-[#dc2626]/20 pointer-events-none" />
-        <div className="absolute -top-3 -right-3 w-6 h-6 border-t border-r border-[#dc2626]/20 pointer-events-none" />
-        <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b border-l border-[#dc2626]/20 pointer-events-none" />
-        <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b border-r border-[#dc2626]/20 pointer-events-none" />
+        <div className="absolute -top-3 -left-3 w-6 h-6 border-t border-l border-red/30 pointer-events-none" />
+        <div className="absolute -top-3 -right-3 w-6 h-6 border-t border-r border-red/30 pointer-events-none" />
+        <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b border-l border-red/30 pointer-events-none" />
+        <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b border-r border-red/30 pointer-events-none" />
 
         {/* Phone bezel */}
         <div
           style={{
             width: 310,
             height: 640,
-            background: "#080808",
+            background: "#070707",
             border: "7px solid #141414",
             borderRadius: 44,
             boxShadow: `
-              0 0 0 1px rgba(255,255,255,0.05),
-              0 60px 120px rgba(0,0,0,0.9),
-              inset 0 1px 0 rgba(255,255,255,0.05)
+              0 0 0 1px rgba(245,241,232,0.05),
+              0 30px 80px rgba(0,0,0,0.75),
+              0 0 40px rgba(239,43,45,0.06),
+              inset 0 1px 0 rgba(245,241,232,0.05)
             `,
             overflow: "hidden",
             position: "relative",
@@ -236,7 +257,7 @@ export default function PhoneMockup() {
             style={{
               width: 96,
               height: 24,
-              background: "#080808",
+              background: "#070707",
               borderBottomLeftRadius: 16,
               borderBottomRightRadius: 16,
             }}
@@ -245,7 +266,7 @@ export default function PhoneMockup() {
           {/* ── PHONE SCREEN ── */}
           <div
             className="h-full w-full flex flex-col overflow-hidden"
-            style={{ background: "#0a0a0a", fontFamily: "Space Mono, monospace" }}
+            style={{ background: "#0a0a0a", fontFamily: FONT_MONO }}
           >
             {/* ── Top Nav ── */}
             <motion.div
@@ -257,8 +278,8 @@ export default function PhoneMockup() {
                 paddingLeft: 14,
                 paddingRight: 14,
                 paddingBottom: 8,
-                borderBottom: "1px solid rgba(31,31,31,0.5)",
-                background: "rgba(10,10,10,0.8)",
+                borderBottom: "1px solid rgba(31,31,31,0.6)",
+                background: "rgba(10,10,10,0.85)",
                 backdropFilter: "blur(8px)",
                 display: "flex",
                 alignItems: "center",
@@ -271,18 +292,18 @@ export default function PhoneMockup() {
                   style={{
                     width: 5, height: 5,
                     borderRadius: "50%",
-                    background: "#00ff88",
-                    boxShadow: "0 0 7px #00ff88",
+                    background: "#ef2b2d",
+                    boxShadow: "0 0 8px #ef2b2d",
                     display: "inline-block",
                   }}
                 />
                 <span
                   style={{
-                    fontFamily: "Syne, sans-serif",
+                    fontFamily: FONT_DISPLAY,
                     fontWeight: 800,
                     fontSize: 13,
-                    letterSpacing: -0.3,
-                    color: "#e8e8e8",
+                    letterSpacing: 0.5,
+                    color: "#f5f1e8",
                   }}
                 >
                   REDLINE
@@ -294,10 +315,10 @@ export default function PhoneMockup() {
                   { label: "SLEEP", value: "7.2h" },
                 ].map((s) => (
                   <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 3 }}>
-                    <span style={{ fontSize: 7, color: "#5a5a5a", textTransform: "uppercase", letterSpacing: 1 }}>
+                    <span style={{ fontSize: 7, color: "#7c786c", textTransform: "uppercase", letterSpacing: 1.2 }}>
                       {s.label}
                     </span>
-                    <span style={{ fontSize: 8, fontWeight: 700, color: "#00ff88" }}>
+                    <span style={{ fontSize: 8, fontWeight: 700, color: "#16d975" }}>
                       {s.value}
                     </span>
                   </div>
@@ -325,28 +346,29 @@ export default function PhoneMockup() {
                 onMouseEnter={hover("greeting")}
                 onMouseLeave={unhover}
                 style={{
-                  background: "rgba(0,255,136,0.05)",
-                  border: "1px solid rgba(0,255,136,0.10)",
+                  background: "rgba(245,241,232,0.025)",
+                  border: "1px solid rgba(22,217,117,0.22)",
+                  borderLeft: "2px solid rgba(22,217,117,0.6)",
                   borderRadius: 10,
                   padding: "8px 10px",
                   maxWidth: "88%",
                   ...pop("greeting"),
                 }}
               >
-                <p style={{ fontSize: 9.5, lineHeight: 1.6, color: "rgba(255,255,255,0.82)" }}>
+                <p style={{ fontSize: 9.5, lineHeight: 1.6, color: "rgba(245,241,232,0.85)" }}>
                   Good morning. Your HRV is up 8% from baseline — you&apos;re
                   primed. Here&apos;s today&apos;s readiness breakdown.
                 </p>
               </motion.div>
 
-              {/* Main recommendation card — no pop, just container */}
+              {/* Main recommendation card */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.45, duration: 0.5, ease: EASE }}
                 style={{
-                  background: "rgba(0,255,136,0.05)",
-                  border: "1px solid rgba(0,255,136,0.10)",
+                  background: "rgba(245,241,232,0.02)",
+                  border: "1px solid rgba(245,241,232,0.06)",
                   borderRadius: 10,
                   padding: "10px",
                   display: "flex",
@@ -368,20 +390,25 @@ export default function PhoneMockup() {
                       transition={{ delay: 0.6 + i * 0.07, duration: 0.3 }}
                       style={{ display: "flex", alignItems: "center", gap: 5 }}
                     >
-                      <span style={{ fontSize: 7, color: "#5a5a5a", width: 42, flexShrink: 0 }}>
+                      <span style={{ fontSize: 7, color: "#7c786c", width: 42, flexShrink: 0, textTransform: "uppercase", letterSpacing: 0.8 }}>
                         {b.label}
                       </span>
                       <div
                         style={{
                           flex: 1,
                           height: 3,
-                          background: "rgba(255,255,255,0.06)",
+                          background: "rgba(245,241,232,0.06)",
                           borderRadius: 99,
                           overflow: "hidden",
                         }}
                       >
                         <motion.div
-                          style={{ height: "100%", background: b.color, borderRadius: 99 }}
+                          style={{
+                            height: "100%",
+                            background: b.color,
+                            borderRadius: 99,
+                            boxShadow: `0 0 6px ${b.color}55`,
+                          }}
                           initial={{ width: "0%" }}
                           animate={isInView ? { width: `${b.pct}%` } : { width: "0%" }}
                           transition={{ delay: 0.65 + i * 0.07, duration: 0.6, ease: EASE }}
@@ -389,7 +416,7 @@ export default function PhoneMockup() {
                       </div>
                       <span
                         style={{
-                          fontSize: 7, color: "#5a5a5a",
+                          fontSize: 7, color: "#7c786c",
                           width: 24, textAlign: "right", flexShrink: 0,
                         }}
                       >
@@ -399,7 +426,7 @@ export default function PhoneMockup() {
                   ))}
                 </div>
 
-                {/* ── Option cards A / B / C — each pops independently ── */}
+                {/* ── Option cards A / B / C ── */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 5, marginTop: 2 }}>
                   {[
                     {
@@ -427,27 +454,25 @@ export default function PhoneMockup() {
                       onMouseLeave={unhover}
                       style={{
                         background: opt.recommended
-                          ? "rgba(0,255,136,0.04)"
-                          : "rgba(255,255,255,0.02)",
+                          ? "rgba(239,43,45,0.06)"
+                          : "rgba(245,241,232,0.02)",
                         border: `1px solid ${
                           hovered === opt.id
                             ? opt.recommended
-                              ? "rgba(0,255,136,0.4)"
-                              : "rgba(255,255,255,0.18)"
+                              ? "rgba(239,43,45,0.55)"
+                              : "rgba(245,241,232,0.18)"
                             : opt.recommended
-                            ? "rgba(0,255,136,0.25)"
-                            : "rgba(255,255,255,0.07)"
+                            ? "rgba(239,43,45,0.35)"
+                            : "rgba(245,241,232,0.07)"
                         }`,
                         borderRadius: 7,
                         padding: "6px 8px",
                         display: "flex",
                         flexDirection: "column",
                         gap: 3,
-                        /* pop() spreads: transition, transform, opacity, boxShadow, cursor
-                           It does NOT set border — so the border above is preserved. */
                         ...pop(opt.id, opt.recommended
-                          ? "rgba(0,255,136,0.15)"
-                          : "rgba(255,255,255,0.08)"),
+                          ? "rgba(239,43,45,0.2)"
+                          : "rgba(245,241,232,0.08)"),
                       }}
                     >
                       <div style={{ display: "flex", gap: 6, alignItems: "flex-start" }}>
@@ -456,26 +481,29 @@ export default function PhoneMockup() {
                             width: 16, height: 16,
                             borderRadius: "50%",
                             background: opt.recommended
-                              ? "#00ff88"
-                              : "rgba(255,255,255,0.06)",
+                              ? "#ef2b2d"
+                              : "rgba(245,241,232,0.06)",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             flexShrink: 0,
                             marginTop: 1,
+                            boxShadow: opt.recommended
+                              ? "0 0 10px rgba(239,43,45,0.5)"
+                              : "none",
                           }}
                         >
                           <span
                             style={{
                               fontSize: 7,
                               fontWeight: 700,
-                              color: opt.recommended ? "#0a0a0a" : "#b0b0b0",
+                              color: opt.recommended ? "#f5f1e8" : "#a8a396",
                             }}
                           >
                             {opt.id.replace("opt-", "")}
                           </span>
                         </div>
-                        <span style={{ fontSize: 8.5, lineHeight: 1.55, color: "rgba(255,255,255,0.78)" }}>
+                        <span style={{ fontSize: 8.5, lineHeight: 1.55, color: "rgba(245,241,232,0.82)" }}>
                           {opt.text}
                         </span>
                       </div>
@@ -484,13 +512,14 @@ export default function PhoneMockup() {
                           style={{
                             marginLeft: 22,
                             display: "inline-block",
-                            background: "rgba(0,255,136,0.12)",
-                            color: "#00ff88",
+                            background: "rgba(239,43,45,0.15)",
+                            color: "#ff4548",
                             fontSize: 6,
-                            letterSpacing: 1.2,
+                            letterSpacing: 1.4,
                             textTransform: "uppercase",
                             padding: "2px 5px",
                             borderRadius: 3,
+                            border: "1px solid rgba(239,43,45,0.3)",
                           }}
                         >
                           RECOMMENDED
@@ -501,7 +530,7 @@ export default function PhoneMockup() {
                 </div>
               </motion.div>
 
-              {/* User reply — pops on hover */}
+              {/* User reply */}
               <motion.div
                 initial={{ opacity: 0, x: 10 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -512,20 +541,20 @@ export default function PhoneMockup() {
               >
                 <div
                   style={{
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.10)",
+                    background: "rgba(245,241,232,0.07)",
+                    border: "1px solid rgba(245,241,232,0.12)",
                     borderRadius: 10,
                     padding: "7px 9px",
-                    ...pop("user-reply", "rgba(255,255,255,0.1)"),
+                    ...pop("user-reply", "rgba(245,241,232,0.1)"),
                   }}
                 >
-                  <p style={{ fontSize: 9.5, color: "#e8e8e8" }}>
+                  <p style={{ fontSize: 9.5, color: "#f5f1e8" }}>
                     I&apos;ll go with option A.
                   </p>
                 </div>
               </motion.div>
 
-              {/* AI follow-up (typewriter) — pops on hover */}
+              {/* AI follow-up (typewriter) */}
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -533,8 +562,9 @@ export default function PhoneMockup() {
                 onMouseEnter={hover("coach-reply")}
                 onMouseLeave={unhover}
                 style={{
-                  background: "rgba(0,255,136,0.05)",
-                  border: "1px solid rgba(0,255,136,0.10)",
+                  background: "rgba(245,241,232,0.025)",
+                  border: "1px solid rgba(22,217,117,0.22)",
+                  borderLeft: "2px solid rgba(22,217,117,0.6)",
                   borderRadius: 10,
                   padding: "8px 10px",
                   maxWidth: "88%",
@@ -542,7 +572,7 @@ export default function PhoneMockup() {
                   ...pop("coach-reply"),
                 }}
               >
-                <p style={{ fontSize: 9.5, lineHeight: 1.6, color: "rgba(255,255,255,0.82)" }}>
+                <p style={{ fontSize: 9.5, lineHeight: 1.6, color: "rgba(245,241,232,0.85)" }}>
                   {coachTyped}
                   {coachTyped.length < COACH_TEXT.length && (
                     <span
@@ -550,7 +580,7 @@ export default function PhoneMockup() {
                       style={{
                         display: "inline-block",
                         width: 1.5, height: 9,
-                        background: "#00ff88",
+                        background: "#16d975",
                         marginLeft: 1,
                         verticalAlign: "middle",
                       }}
@@ -586,9 +616,9 @@ export default function PhoneMockup() {
                     style={{
                       flexShrink: 0,
                       padding: "3px 7px",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.03)",
-                      color: "#7a7a7a",
+                      border: "1px solid rgba(245,241,232,0.09)",
+                      background: "rgba(245,241,232,0.03)",
+                      color: "#a8a396",
                       fontSize: 7.5,
                       borderRadius: 99,
                       whiteSpace: "nowrap",
@@ -613,7 +643,7 @@ export default function PhoneMockup() {
                   padding: "4px 8px",
                 }}
               >
-                <span style={{ flex: 1, fontSize: 8.5, color: "#5a5a5a" }}>
+                <span style={{ flex: 1, fontSize: 8.5, color: "#7c786c" }}>
                   Ask Redline...
                 </span>
                 <div
@@ -630,7 +660,7 @@ export default function PhoneMockup() {
                     width="8" height="8"
                     viewBox="0 0 16 16"
                     fill="none"
-                    stroke="#5a5a5a"
+                    stroke="#7c786c"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -646,8 +676,8 @@ export default function PhoneMockup() {
                   display: "flex",
                   justifyContent: "space-around",
                   padding: "5px 10px 8px",
-                  borderTop: "1px solid rgba(31,31,31,0.5)",
-                  background: "rgba(26,26,26,0.5)",
+                  borderTop: "1px solid rgba(31,31,31,0.6)",
+                  background: "rgba(20,20,20,0.5)",
                   backdropFilter: "blur(8px)",
                 }}
               >
@@ -674,20 +704,21 @@ export default function PhoneMockup() {
                           position: "absolute",
                           top: -6,
                           width: 14, height: 2,
-                          background: "#00ff88",
+                          background: "#ef2b2d",
                           borderRadius: 99,
+                          boxShadow: "0 0 8px rgba(239,43,45,0.7)",
                         }}
                       />
                     )}
-                    <span style={{ fontSize: 13, color: tab.active ? "#00ff88" : "#5a5a5a" }}>
+                    <span style={{ fontSize: 13, color: tab.active ? "#ef2b2d" : "#7c786c" }}>
                       {tab.icon}
                     </span>
                     <span
                       style={{
                         fontSize: 5.5,
-                        letterSpacing: 1,
+                        letterSpacing: 1.2,
                         textTransform: "uppercase",
-                        color: tab.active ? "#00ff88" : "#5a5a5a",
+                        color: tab.active ? "#ef2b2d" : "#7c786c",
                       }}
                     >
                       {tab.label}

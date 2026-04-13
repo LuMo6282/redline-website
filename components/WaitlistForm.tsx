@@ -105,11 +105,17 @@ export default function WaitlistForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="font-mono text-[10px] text-slate-700 uppercase tracking-widest"
+          className="font-mono text-[10px] text-bone-500 uppercase tracking-[0.22em] flex items-center gap-2"
         >
-          <span className="text-[#dc2626]">{count.toLocaleString()}</span>{" "}
-          athletes waiting &middot;{" "}
-          <span className="text-slate-600">limited early access</span>
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-red opacity-60 animate-ping" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-red" />
+          </span>
+          <span>
+            <span className="text-red font-bold">{count.toLocaleString()}</span>
+            <span className="text-bone-400"> athletes waiting</span>
+            <span className="text-bone-600"> · limited early access</span>
+          </span>
         </motion.p>
       )}
 
@@ -121,7 +127,7 @@ export default function WaitlistForm() {
             initial={{ opacity: 0, scale: 0.97, y: 4 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center gap-3 border border-[#dc2626]/30 bg-[#dc2626]/[0.06] px-4 py-3"
+            className="flex items-center gap-3 border border-red/40 bg-red/6 px-4 py-3"
           >
             <motion.div
               initial={{ scale: 0, rotate: -10 }}
@@ -132,13 +138,13 @@ export default function WaitlistForm() {
                 stiffness: 500,
                 damping: 25,
               }}
-              className="flex-shrink-0 w-4 h-4 border border-[#dc2626] flex items-center justify-center"
+              className="shrink-0 w-4 h-4 border border-red flex items-center justify-center"
             >
               <svg
                 viewBox="0 0 10 8"
                 className="w-2.5 h-2"
                 fill="none"
-                stroke="#dc2626"
+                stroke="#ef2b2d"
                 strokeWidth="1.5"
                 strokeLinecap="square"
               >
@@ -150,7 +156,7 @@ export default function WaitlistForm() {
                 />
               </svg>
             </motion.div>
-            <span className="font-mono text-sm text-white">
+            <span className="font-mono text-[13px] text-bone-50 tracking-wide">
               You&apos;re on the list.
             </span>
           </motion.div>
@@ -175,11 +181,11 @@ export default function WaitlistForm() {
                 placeholder="enter your email"
                 disabled={status === "loading"}
                 autoComplete="email"
-                className="w-full h-12 bg-[#0a0a0a] border border-white/[0.1] border-r-0 font-mono text-sm text-white placeholder:text-slate-700 px-4 outline-none focus:border-[#dc2626] transition-colors duration-200 disabled:opacity-50"
+                className="w-full h-12 bg-ink-surface border border-white/10 border-r-0 font-mono text-[13px] text-bone-50 placeholder:text-bone-600 px-4 outline-none focus:border-red transition-colors duration-200 disabled:opacity-50"
                 style={{
                   borderColor:
                     status === "error"
-                      ? "rgba(220,38,38,0.7)"
+                      ? "rgba(239,43,45,0.7)"
                       : undefined,
                 }}
               />
@@ -190,23 +196,26 @@ export default function WaitlistForm() {
               disabled={status === "loading"}
               onMouseMove={handleBtnMouseMove}
               onMouseLeave={handleBtnMouseLeave}
-              className="h-12 bg-[#dc2626] font-mono text-[11px] text-white uppercase tracking-[0.15em] px-5 border border-[#dc2626] hover:bg-[#b91c1c] active:scale-95 disabled:opacity-60 whitespace-nowrap cursor-pointer"
+              className="h-12 bg-red font-mono text-[11px] text-bone-50 uppercase tracking-[0.18em] px-6 border border-red hover:bg-red-dim active:scale-95 disabled:opacity-60 whitespace-nowrap cursor-pointer"
               style={{
                 boxShadow:
                   status !== "loading"
-                    ? "0 0 20px rgba(220,38,38,0.2)"
+                    ? "0 0 28px rgba(239,43,45,0.28), inset 0 1px 0 rgba(255,255,255,0.1)"
                     : "none",
                 transition: "transform 0.2s cubic-bezier(0.22,1,0.36,1), background-color 0.15s ease, box-shadow 0.15s ease",
               }}
             >
               {status === "loading" ? (
                 <span className="flex items-center gap-1.5">
-                  <span className="inline-block w-1 h-1 bg-white/80 blink" />
-                  <span className="inline-block w-1 h-1 bg-white/80 blink" style={{ animationDelay: "0.2s" }} />
-                  <span className="inline-block w-1 h-1 bg-white/80 blink" style={{ animationDelay: "0.4s" }} />
+                  <span className="inline-block w-1 h-1 bg-bone-50/80 blink" />
+                  <span className="inline-block w-1 h-1 bg-bone-50/80 blink" style={{ animationDelay: "0.2s" }} />
+                  <span className="inline-block w-1 h-1 bg-bone-50/80 blink" style={{ animationDelay: "0.4s" }} />
                 </span>
               ) : (
-                "Join the Waitlist"
+                <span className="flex items-center gap-2">
+                  Join the Waitlist
+                  <span aria-hidden="true" className="inline-block">→</span>
+                </span>
               )}
             </button>
           </motion.form>
@@ -220,7 +229,7 @@ export default function WaitlistForm() {
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="font-mono text-[10px] text-[#dc2626] uppercase tracking-widest"
+            className="font-mono text-[10px] text-red uppercase tracking-[0.22em]"
           >
             Something went wrong. Try again.
           </motion.p>
@@ -233,10 +242,10 @@ export default function WaitlistForm() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="font-mono text-[10px] text-slate-700 uppercase tracking-widest"
+          className="font-mono text-[10px] text-bone-500 uppercase tracking-[0.22em]"
         >
-          <span className="text-[#dc2626]">{count.toLocaleString()}</span>{" "}
-          athletes waiting
+          <span className="text-red font-bold">{count.toLocaleString()}</span>{" "}
+          <span className="text-bone-400">athletes waiting</span>
         </motion.p>
       )}
     </div>

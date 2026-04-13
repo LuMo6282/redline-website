@@ -10,19 +10,19 @@ const steps = [
     num: "01",
     title: "Check in",
     desc: "Log sleep, soreness, stress, and wellness in under 30 seconds. Redline builds your baseline over time.",
-    accent: "#dc2626",
+    accent: "#ef2b2d",
   },
   {
     num: "02",
     title: "Get scored",
     desc: "Your readiness score updates in real-time — combining HRV, subjective data, and training load history.",
-    accent: "#00ff88",
+    accent: "#16d975",
   },
   {
     num: "03",
     title: "Train smart",
     desc: "Receive AI-adapted options calibrated to your state. Push when you're primed. Pull back when you're not.",
-    accent: "#dc2626",
+    accent: "#ef2b2d",
   },
 ];
 
@@ -31,26 +31,53 @@ export default function HowItWorks() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="relative z-10 py-32 px-8 md:px-14 lg:px-20 xl:px-24">
-      <div ref={ref} className="max-w-5xl mx-auto">
+    <section className="relative z-10 py-32 px-6 md:px-10 lg:px-14 xl:px-20">
+      <div ref={ref} className="max-w-6xl mx-auto">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, ease: EASE }}
-          className="mb-20"
+          className="mb-24 flex flex-col md:flex-row md:items-end md:justify-between gap-8"
         >
-          <span className="text-[10px] text-[#dc2626] uppercase tracking-[0.4em] block mb-3">
-            How it works
-          </span>
-          <h2 className="text-[clamp(1.8rem,4vw,3rem)] text-white leading-tight tracking-tight">
-            Three steps to{" "}
-            <span className="text-slate-500">training that adapts.</span>
-          </h2>
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="h-px w-8 bg-red" />
+              <span className="font-mono text-[10px] text-bone-300 uppercase tracking-[0.32em]">
+                / 02 · how it works
+              </span>
+            </div>
+            <h2
+              className="text-bone-50 leading-[0.98] tracking-[-0.025em]"
+              style={{
+                fontFamily: "var(--font-syne), 'Syne', sans-serif",
+                fontWeight: 700,
+                fontSize: "clamp(2rem, 4.5vw, 3.5rem)",
+              }}
+            >
+              Three steps to training{" "}
+              <span className="text-bone-400">that adapts.</span>
+            </h2>
+          </div>
+          <div className="font-mono text-[10px] text-bone-500 uppercase tracking-[0.25em] md:text-right md:max-w-[200px] leading-relaxed">
+            No journaling. No manual
+            <br />
+            log-building. Just answers.
+          </div>
         </motion.div>
 
         {/* Steps */}
-        <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid md:grid-cols-3 gap-10 md:gap-14 relative">
+          {/* Connector line on desktop */}
+          <div
+            aria-hidden="true"
+            className="hidden md:block absolute top-[42px] left-[3%] right-[3%] h-px"
+            style={{
+              background:
+                "linear-gradient(to right, transparent, rgba(245,241,232,0.12), transparent)",
+            }}
+          />
+
           {steps.map((step, i) => (
             <motion.div
               key={step.num}
@@ -63,31 +90,69 @@ export default function HowItWorks() {
               }}
               className="group relative"
             >
-              {/* Step number */}
-              <span
-                className="text-[64px] font-bold leading-none tracking-tighter block mb-4"
-                style={{ color: step.accent, opacity: 0.3 }}
-              >
-                {step.num}
-              </span>
+              {/* Step marker */}
+              <div className="flex items-center gap-3 mb-7">
+                <div
+                  className="relative flex items-center justify-center w-[52px] h-[52px] bg-[#070707] border"
+                  style={{ borderColor: `${step.accent}55` }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "var(--font-syne), 'Syne', sans-serif",
+                      fontWeight: 700,
+                      fontSize: 22,
+                      color: step.accent,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    {step.num}
+                  </span>
+                  {/* Corner ticks */}
+                  <span
+                    className="absolute -top-px -left-px w-2 h-2 border-t border-l"
+                    style={{ borderColor: step.accent }}
+                  />
+                  <span
+                    className="absolute -top-px -right-px w-2 h-2 border-t border-r"
+                    style={{ borderColor: step.accent }}
+                  />
+                  <span
+                    className="absolute -bottom-px -left-px w-2 h-2 border-b border-l"
+                    style={{ borderColor: step.accent }}
+                  />
+                  <span
+                    className="absolute -bottom-px -right-px w-2 h-2 border-b border-r"
+                    style={{ borderColor: step.accent }}
+                  />
+                </div>
+                {/* Accent line */}
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={isInView ? { scaleX: 1 } : {}}
+                  transition={{
+                    delay: 0.35 + i * 0.15,
+                    duration: 0.6,
+                    ease: EASE,
+                  }}
+                  className="h-px flex-1 origin-left"
+                  style={{
+                    background: `linear-gradient(to right, ${step.accent}aa, transparent)`,
+                  }}
+                />
+              </div>
 
-              {/* Accent line */}
-              <motion.div
-                initial={{ scaleX: 0 }}
-                animate={isInView ? { scaleX: 1 } : {}}
-                transition={{
-                  delay: 0.3 + i * 0.15,
-                  duration: 0.5,
-                  ease: EASE,
+              <h3
+                className="text-bone-50 mb-4 leading-tight"
+                style={{
+                  fontFamily: "var(--font-syne), 'Syne', sans-serif",
+                  fontWeight: 600,
+                  fontSize: 22,
+                  letterSpacing: "-0.01em",
                 }}
-                className="h-px w-12 mb-5 origin-left"
-                style={{ background: step.accent }}
-              />
-
-              <h3 className="text-white text-[15px] uppercase tracking-[0.15em] mb-3">
+              >
                 {step.title}
               </h3>
-              <p className="text-slate-500 text-[13px] leading-relaxed">
+              <p className="text-bone-300 text-[14px] leading-[1.65] max-w-[320px]">
                 {step.desc}
               </p>
             </motion.div>

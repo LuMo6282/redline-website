@@ -1,10 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  --color-red: #dc2626;
-  --color-bg: #050505;
-  --color-surface: #0d0d0d;
-  --font-mono: var(--font-share-tech-mono), "Share Tech Mono", monospace;
+  /* ── Ink (backgrounds / surfaces) ── */
+  --color-ink-bg: #050505;
+  --color-ink-surface: #0a0a0a;
+  --color-ink-elevated: #0f0f0f;
+  --color-ink-line: #141414;
+
+  /* ── Bone (text — warm off-white, editorial feel) ── */
+  --color-bone-50: #f5f1e8;
+  --color-bone-100: #e8e4d9;
+  --color-bone-200: #d4d0c3;
+  --color-bone-300: #a8a396;
+  --color-bone-400: #7c786c;
+  --color-bone-500: #5a5750;
+  --color-bone-600: #3d3a33;
+  --color-bone-700: #28251f;
+
+  /* ── Signal (brand accents) ── */
+  --color-red: #ef2b2d;
+  --color-red-bright: #ff4548;
+  --color-red-dim: #b91c1c;
+  --color-green: #16d975;
+  --color-green-bright: #3ef094;
+  --color-amber: #f7b955;
+
+  /* ── Fonts ── */
+  --font-display: var(--font-syne), "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter-tight), "Inter Tight", ui-sans-serif, system-ui,
+    sans-serif;
+  --font-mono: var(--font-share-tech-mono), "Share Tech Mono", ui-monospace,
+    monospace;
 }
 
 /* ── Base ── */
@@ -21,16 +47,18 @@ html {
 
 body {
   background: #050505;
-  color: #fff;
-  font-family: var(--font-share-tech-mono), "Share Tech Mono", monospace;
+  color: #e8e4d9;
+  font-family: var(--font-inter-tight), "Inter Tight", ui-sans-serif,
+    system-ui, sans-serif;
+  font-feature-settings: "ss01", "ss02", "cv11";
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: rgba(220, 38, 38, 0.25);
-  color: #fff;
+  background: rgba(239, 43, 45, 0.3);
+  color: #f5f1e8;
 }
 
 ::-webkit-scrollbar {
@@ -40,7 +68,7 @@ body {
   background: #050505;
 }
 ::-webkit-scrollbar-thumb {
-  background: #dc2626;
+  background: #ef2b2d;
 }
 
 /* ── Reduced motion ── */
@@ -55,7 +83,8 @@ body {
 
   .scanline,
   .phone-float,
-  .phone-tilt-float {
+  .phone-tilt-float,
+  .marquee-track {
     animation: none !important;
   }
 }
@@ -64,21 +93,28 @@ body {
 .grid-bg {
   background-image: linear-gradient(
       to right,
-      rgba(255, 255, 255, 0.035) 1px,
+      rgba(245, 241, 232, 0.025) 1px,
       transparent 1px
     ),
     linear-gradient(
       to bottom,
-      rgba(255, 255, 255, 0.035) 1px,
+      rgba(245, 241, 232, 0.025) 1px,
       transparent 1px
     );
-  background-size: 48px 48px;
+  background-size: 56px 56px;
 }
 
-/* ── Scanline ── */
+/* ── Noise overlay (film grain) ── */
+.noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+}
+
+/* ── Scanline (kept, softer) ── */
 @keyframes scanline {
   0% {
-    top: -120px;
+    top: -200px;
   }
   100% {
     top: 100%;
@@ -87,19 +123,19 @@ body {
 
 .scanline {
   position: fixed;
-  top: -120px;
+  top: -200px;
   left: 0;
   width: 100%;
-  height: 120px;
+  height: 200px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(220, 38, 38, 0.04) 50%,
+    rgba(239, 43, 45, 0.025) 50%,
     transparent 100%
   );
-  animation: scanline 12s linear infinite;
+  animation: scanline 16s linear infinite;
   pointer-events: none;
-  z-index: 50;
+  z-index: 5;
 }
 
 /* ── Phone float (mobile only) ── */
@@ -186,11 +222,55 @@ body {
     transform: scale(1);
   }
   50% {
-    opacity: 0.6;
-    transform: scale(0.85);
+    opacity: 0.55;
+    transform: scale(0.82);
   }
 }
 
 .pulse-red {
-  animation: pulse-red 1.5s ease-in-out infinite;
+  animation: pulse-red 1.8s ease-in-out infinite;
+}
+
+/* ── Top banner sweep line ── */
+@keyframes banner-sweep {
+  0% {
+    transform: translateX(-30%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+.banner-sweep {
+  animation: banner-sweep 6s ease-in-out infinite;
+}
+
+/* ── Marquee (for 'built for' tags in trust bar) ── */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+
+/* ── Type utilities ── */
+.font-display {
+  font-family: var(--font-syne), "Syne", ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "ss02";
+}
+
+.font-body {
+  font-family: var(--font-inter-tight), "Inter Tight", ui-sans-serif,
+    system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-share-tech-mono), "Share Tech Mono", ui-monospace,
+    monospace;
 }
