@@ -30,13 +30,10 @@ export default function Background() {
 
   return (
     <>
-      {/* Deep base wash — subtle vignette from center */}
+      {/* Deep base wash — flat */}
       <div
         className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 90% 70% at 50% 40%, #0a0a0a 0%, #050505 60%, #030303 100%)",
-        }}
+        style={{ background: "#050505" }}
       />
 
       {/* Fixed grid overlay */}
